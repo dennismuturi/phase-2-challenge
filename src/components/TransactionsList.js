@@ -1,9 +1,7 @@
-import React from "react";
-import Transaction from "./Transaction";
+import React from 'react';
+import Transaction from './Transaction';
 
-function TransactionsList({myTransactions}) {
-  
-
+function TransactionsList({ transactions, searchTerm }) {
   return (
     <table className="ui celled striped padded table">
       <tbody>
@@ -21,17 +19,23 @@ function TransactionsList({myTransactions}) {
             <h3 className="ui center aligned header">Amount</h3>
           </th>
         </tr>
-        {
-          myTransactions.map((myTransaction)=>{
-            <Transaction 
-            key={myTransaction.id}
-            date={myTransaction.date}
-            description={myTransaction.description}
-            category={myTransaction.category}
-            amount={myTransaction.amount}
-            />
-          })
-        }
+        {transactions
+          .filter((transaction) =>
+            transaction.description.toLowerCase().includes(searchTerm)
+          )
+          .map((transaction) => {
+            return (
+              <>
+                <Transaction
+                  key={transaction.id}
+                  date={transaction.date}
+                  description={transaction.description}
+                  category={transaction.category}
+                  amount={transaction.amount}
+                />
+              </>
+            );
+          })}
       </tbody>
     </table>
   );
